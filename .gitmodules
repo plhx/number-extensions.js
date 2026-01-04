@@ -1,0 +1,3 @@
+[submodule "result.js"]
+	path = result.js
+	url = https://github.com/plhx/result.js.git
