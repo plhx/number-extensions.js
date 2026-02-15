@@ -303,4 +303,6 @@
         parseIntOr, parseIntOrElse, parseIntOpt,
         parseSafeIntOr, parseSafeIntOrElse, parseSafeIntOpt
     })
-})(this)
+
+    root.dispatchEvent(new Event('NumberExtensionsLoaded'))
+})(window)

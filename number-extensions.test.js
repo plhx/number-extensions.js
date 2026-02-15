@@ -3,7 +3,12 @@
  * @copyright 2026 PlasticHeart
  */
 
-!(() => {
+(async () => {
+    await Promise.all([
+        new Promise(resolve => window.addEventListener('ResultLoaded', resolve)),
+        new Promise(resolve => window.addEventListener('NumberExtensionsLoaded', resolve))
+    ])
+
     /**
      * @param {T} a
      * @param {T} b
