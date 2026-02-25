@@ -243,7 +243,7 @@
     }
 
     /**
-     * @param {[number]} others
+     * @param {number[]} others
      * @returns {number}
      */
     Number.prototype.max = function (...others) {
@@ -251,7 +251,7 @@
     }
 
     /**
-     * @param {[number]} others
+     * @param {number[]} others
      * @returns {number}
      */
     Number.prototype.min = function (...others) {
