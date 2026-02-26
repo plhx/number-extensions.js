@@ -3,12 +3,7 @@
  * @copyright 2026 PlasticHeart
  */
 
-(async () => {
-    await Promise.all([
-        new Promise(resolve => window.addEventListener('ResultLoaded', resolve)),
-        new Promise(resolve => window.addEventListener('NumberExtensionsLoaded', resolve))
-    ])
-
+document.addEventListener('DOMContentLoaded', async () => {
     /**
      * @param {T} a
      * @param {T} b
@@ -259,4 +254,4 @@
         assertEq((2).sub(NaN, { saturate: true }), new Some(NaN))
         assertEq((2).sub(NaN, { unsigned: true }), new Some(NaN))
     })
-})()
+})
