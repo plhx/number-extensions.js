@@ -186,7 +186,7 @@
      */
     Number.prototype.compareThen = function (other, orElse) {
         const result = this.compare(other)
-        return result == null || result == 0 ? orElse() : result
+        return result == null || result == 0 ? mustNumber(orElse()) : result
     }
 
     /**
