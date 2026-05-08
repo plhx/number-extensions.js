@@ -1,0 +1,30 @@
+{
+  "name": "number-extensions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "build": "sh build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plhx/number-extensions.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/plhx/number-extensions.js/issues"
+  },
+  "homepage": "https://github.com/plhx/number-extensions.js#readme",
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "happy-dom": "^20.9.0",
+    "vitest": "^4.1.5"
+  }
+}

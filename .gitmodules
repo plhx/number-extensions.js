@@ -1,6 +1,0 @@
-[submodule "result.js"]
-	path = result.js
-	url = https://github.com/plhx/result.js.git
-[submodule "assert.js"]
-	path = assert.js
-	url = https://github.com/plhx/assert.js

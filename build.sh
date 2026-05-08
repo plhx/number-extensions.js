@@ -1,11 +1,15 @@
 #!/bin/sh
 
-PKG_DIR="."
-LIB_NAME="number-extensions"
+set -e
 
-npx esbuild "${PKG_DIR}/${LIB_NAME}.js" \
+OUTFILE="number-extensions.min.js"
+
+echo "Building $OUTFILE..."
+
+npx esbuild src/number-extensions.js \
     --bundle \
     --minify \
-    --target=es2020 \
-    --format=iife \
-    --outfile="${PKG_DIR}/${LIB_NAME}.min.js"
+    --platform=browser \
+    --outfile="$OUTFILE"
+
+echo "Done: $OUTFILE ($(wc -c < "$OUTFILE") bytes)"
