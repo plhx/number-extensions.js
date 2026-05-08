@@ -16,7 +16,7 @@ const {
      * @param {boolean} options.unsigned
      * @returns {?number}
      */
-    function expr(value, { safe = false, saturate = false, unsigned = false } = {}) {
+    function coerce(value, { safe = false, saturate = false, unsigned = false } = {}) {
         if (unsigned) {
             value = Math.max(value, 0)
         }
@@ -157,7 +157,7 @@ const {
      * @returns {?number}
      */
     Number.prototype.add = function (other, { safe, saturate, unsigned } = {}) {
-        return expr(this + +other, { safe, saturate, unsigned })
+        return coerce(this + +other, { safe, saturate, unsigned })
     }
 
     /**
@@ -202,7 +202,7 @@ const {
      * @returns {?number}
      */
     Number.prototype.div = function (other, { safe, saturate, unsigned } = {}) {
-        return expr(this / +other, { safe, saturate, unsigned })
+        return coerce(this / +other, { safe, saturate, unsigned })
     }
 
     /**
@@ -230,7 +230,7 @@ const {
      * @returns {?number}
      */
     Number.prototype.mod = function (other, { safe, saturate, unsigned } = {}) {
-        return expr(this % +other, { safe, saturate, unsigned })
+        return coerce(this % +other, { safe, saturate, unsigned })
     }
 
     /**
@@ -242,7 +242,7 @@ const {
      * @returns {?number}
      */
     Number.prototype.mul = function (other, { safe, saturate, unsigned } = {}) {
-        return expr(this * +other, { safe, saturate, unsigned })
+        return coerce(this * +other, { safe, saturate, unsigned })
     }
 
     /**
@@ -261,7 +261,7 @@ const {
      * @returns {?number}
      */
     Number.prototype.sub = function (other, { safe, saturate, unsigned } = {}) {
-        return expr(this - +other, { safe, saturate, unsigned })
+        return coerce(this - +other, { safe, saturate, unsigned })
     }
 
     if (typeof globalThis != 'undefined') {
