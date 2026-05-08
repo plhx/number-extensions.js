@@ -3,7 +3,11 @@
  * @copyright 2026 PlasticHeart
  */
 
-!(root => {
+const {
+    parseFloatOr, parseFloatOrElse,
+    parseIntOr, parseIntOrElse,
+    parseSafeIntOr, parseSafeIntOrElse
+} = (() => {
     /**
      * @param {number} value
      * @param {Object} options
@@ -260,11 +264,27 @@
         return expr(this - +other, { safe, saturate, unsigned })
     }
 
-    Object.assign(root, {
+    if (typeof globalThis != 'undefined') {
+        Object.assign(globalThis, {
+            parseFloatOr, parseFloatOrElse,
+            parseIntOr, parseIntOrElse,
+            parseSafeIntOr, parseSafeIntOrElse
+        })
+
+        if (typeof globalThis.dispatchEvent == 'function') {
+            globalThis.dispatchEvent(new Event('NumberExtensionsLoaded'))
+        }
+    }
+
+    return {
         parseFloatOr, parseFloatOrElse,
         parseIntOr, parseIntOrElse,
         parseSafeIntOr, parseSafeIntOrElse
-    })
+    }
+})()
 
-    root.dispatchEvent(new Event('NumberExtensionsLoaded'))
-})(window)
+export {
+    parseFloatOr, parseFloatOrElse,
+    parseIntOr, parseIntOrElse,
+    parseSafeIntOr, parseSafeIntOrElse
+}
