@@ -5,18 +5,12 @@
 
 !(root => {
     /**
-     * @template T
-     * @type {{Some: new <T>(value: T), None: new <T>()}}
-     */
-    const { Option, Some, None } = root
-
-    /**
      * @param {number} value
      * @param {Object} options
      * @param {boolean} options.safe
      * @param {boolean} options.saturate
      * @param {boolean} options.unsigned
-     * @returns {Option<T>}
+     * @returns {?number}
      */
     function expr(value, { safe = false, saturate = false, unsigned = false } = {}) {
         if (unsigned) {
@@ -29,17 +23,17 @@
         }
         if (safe) {
             if (Number.isNaN(value)) {
-                return new None()
+                return null
             }
             if (Number.isInteger(value) && !Number.isSafeInteger(value)) {
-                return new None()
+                return null
             }
         }
-        return new Some(value)
+        return value
     }
 
     /**
-     * @param {any?} value
+     * @param {any} value
      * @returns {number}
      */
     function mustNumber(value) {
@@ -50,7 +44,7 @@
     }
 
     /**
-     * @param {any?} value
+     * @param {any} value
      * @returns {number}
      */
     function mustInteger(value) {
@@ -61,7 +55,7 @@
     }
 
     /**
-     * @param {any?} value
+     * @param {any} value
      * @returns {number}
      */
     function mustSafeInteger(value) {
@@ -93,19 +87,7 @@
 
     /**
      * @param {string} value
-     * @param {Object} options
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
-     */
-    function parseFloatOpt(value, { safe, saturate, unsigned } = {}) {
-        return expr(parseFloat(value), { safe, saturate, unsigned })
-    }
-
-    /**
-     * @param {string} value
-     * @param {number?} radix
+     * @param {?number} radix
      * @param {number} defaultValue
      * @returns {number}
      */
@@ -116,7 +98,7 @@
 
     /**
      * @param {string} value
-     * @param {number?} radix
+     * @param {?number} radix
      * @param {function(): number} orElse
      * @returns {number}
      */
@@ -127,20 +109,7 @@
 
     /**
      * @param {string} value
-     * @param {number?} radix
-     * @param {Object} options
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
-     */
-    function parseIntOpt(value, radix, { safe, saturate, unsigned } = {}) {
-        return expr(parseInt(value, radix), { safe, saturate, unsigned })
-    }
-
-    /**
-     * @param {string} value
-     * @param {number?} radix
+     * @param {?number} radix
      * @param {number} defaultValue
      * @returns {number}
      */
@@ -151,26 +120,13 @@
 
     /**
      * @param {string} value
-     * @param {number?} radix
+     * @param {?number} radix
      * @param {function(): number} orElse
      * @returns {number}
      */
     function parseSafeIntOrElse(value, radix, orElse) {
         const result = parseInt(value, radix)
         return Number.isNaN(result) ? mustSafeInteger(orElse()) : result
-    }
-
-    /**
-     * @param {string} value
-     * @param {number?} radix
-     * @param {Object} options
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
-     */
-    function parseSafeIntOpt(value, radix, { safe, saturate, unsigned } = {}) {
-        return expr(parseInt(value, radix), { safe: true, saturate, unsigned })
     }
 
     /**
@@ -181,7 +137,7 @@
     }
 
     /**
-     * @param {number}
+     * @param {number} other
      * @returns {number}
      */
     Number.prototype.absDiff = function (other) {
@@ -190,10 +146,11 @@
 
     /**
      * @param {number} other
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
+     * @param {Object} [options]
+     * @param {boolean} [options.safe]
+     * @param {boolean} [options.saturate]
+     * @param {boolean} [options.unsigned]
+     * @returns {?number}
      */
     Number.prototype.add = function (other, { safe, saturate, unsigned } = {}) {
         return expr(this + +other, { safe, saturate, unsigned })
@@ -209,8 +166,8 @@
     }
 
     /**
-     * @param {any}
-     * @returns {number?}
+     * @param {any} other
+     * @returns {?number}
      */
     Number.prototype.compare = function (other) {
         if (typeof other == 'number') {
@@ -225,6 +182,7 @@
     /**
      * @param {any} other
      * @param {function(): number} orElse
+     * @returns {number}
      */
     Number.prototype.compareThen = function (other, orElse) {
         const result = this.compare(other)
@@ -233,17 +191,18 @@
 
     /**
      * @param {number} other
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
+     * @param {Object} [options]
+     * @param {boolean} [options.safe]
+     * @param {boolean} [options.saturate]
+     * @param {boolean} [options.unsigned]
+     * @returns {?number}
      */
     Number.prototype.div = function (other, { safe, saturate, unsigned } = {}) {
         return expr(this / +other, { safe, saturate, unsigned })
     }
 
     /**
-     * @param {number[]} others
+     * @param {...number} others
      * @returns {number}
      */
     Number.prototype.max = function (...others) {
@@ -251,7 +210,7 @@
     }
 
     /**
-     * @param {number[]} others
+     * @param {...number} others
      * @returns {number}
      */
     Number.prototype.min = function (...others) {
@@ -260,10 +219,11 @@
 
     /**
      * @param {number} other
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
+     * @param {Object} [options]
+     * @param {boolean} [options.safe]
+     * @param {boolean} [options.saturate]
+     * @param {boolean} [options.unsigned]
+     * @returns {?number}
      */
     Number.prototype.mod = function (other, { safe, saturate, unsigned } = {}) {
         return expr(this % +other, { safe, saturate, unsigned })
@@ -271,10 +231,11 @@
 
     /**
      * @param {number} other
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
+     * @param {Object} [options]
+     * @param {boolean} [options.safe]
+     * @param {boolean} [options.saturate]
+     * @param {boolean} [options.unsigned]
+     * @returns {?number}
      */
     Number.prototype.mul = function (other, { safe, saturate, unsigned } = {}) {
         return expr(this * +other, { safe, saturate, unsigned })
@@ -289,19 +250,20 @@
 
     /**
      * @param {number} other
-     * @param {boolean?} options.safe
-     * @param {boolean?} options.saturate
-     * @param {boolean?} options.unsigned
-     * @returns {Option<number>}
+     * @param {Object} [options]
+     * @param {boolean} [options.safe]
+     * @param {boolean} [options.saturate]
+     * @param {boolean} [options.unsigned]
+     * @returns {?number}
      */
     Number.prototype.sub = function (other, { safe, saturate, unsigned } = {}) {
         return expr(this - +other, { safe, saturate, unsigned })
     }
 
     Object.assign(root, {
-        parseFloatOr, parseFloatOrElse, parseFloatOpt,
-        parseIntOr, parseIntOrElse, parseIntOpt,
-        parseSafeIntOr, parseSafeIntOrElse, parseSafeIntOpt
+        parseFloatOr, parseFloatOrElse,
+        parseIntOr, parseIntOrElse,
+        parseSafeIntOr, parseSafeIntOrElse
     })
 
     root.dispatchEvent(new Event('NumberExtensionsLoaded'))
